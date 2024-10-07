@@ -1,63 +1,68 @@
-import React from "react";
-
-import { useState } from "react"
-import { Button, Container, FormControl } from "react-bootstrap"
+import React, { useState } from "react";
+import { Button, Container, FormControl } from "react-bootstrap";
 
 export const Counter = () => {
-
-    const [count, setCount] = useState(0)
-
-    const [list, SetList] = useState([1])
-
-    const addListElement = () => {
-        const nList = list
-        list.push(nList.length + 1)
-        SetList([...nList])
-
-    }
-
+   
+    const [count, setCount] = useState(0);
     
-    const restListElement = () => {
-        const nList = list
-        list.pop(nList.length + 1)
-        SetList([...nList])
 
-    }
+    const [inputs, setInputs] = useState([0]); 
 
+    // Función para agregar un nuevo input
+    const addInput = () => {
+        // se crea un nuevo arreglo y agregamos un nuevo input de valor 0
+        const newInputs = [...inputs, 0]; 
+        setInputs(newInputs);
+    };
 
-    const increment = () =>  {
-        setCount(count+1)
-    }
+    // Función para eliminar el último input
+    const removeInput = () => {
+        if (inputs.length > 1) { 
+            
+            const newInputs = []; 
+            for (let i = 0; i < inputs.length - 1; i++) {
+                newInputs.push(inputs[i]); 
+            }
+            setInputs(newInputs); 
+        }
+    };
 
-    const decrement = () =>  {
-        setCount(count-1)
+    // Función para manejar el cambio de valor en un input específico
+    const handleInputChange = (index, value) => {
+        // nuevo arreglo 
+        const newInputs = [...inputs];
+        // convierte el valor a número o a 0 si está vacío
+        newInputs[index] = value === "" ? 0 : Number(value); 
+        setInputs(newInputs); 
+    };
+
+    // Cálculo del total sumando todos los valores en inputs
+    let total = 0; 
+    for (let i = 0; i < inputs.length; i++) {
+        total += inputs[i]; 
     }
 
     return (
         <Container>
-                    <h3>{count}</h3>
-                    <Button  onClick={()=>increment()}>add</Button>
-                    <Button  onClick={()=>decrement()}>decrease</Button>
-                    <hr></hr>
-                    <h3>Lista dinamica</h3>
-
-                    {
-                        list.map((value, i)=>(
-
-                           <>
-                           
-                             <p> Cifra: {i+1}</p>
-                            <FormControl className="mb-3"></FormControl>
-                             </>
-
-                        ))
-
-                        
-                    }
-
-                    
-                     <Button  onClick={()=>addListElement()}>add</Button>
-                     <Button  onClick={()=>restListElement()}>decrease</Button>
+            <h3>{count}</h3>
+            <Button onClick={() => setCount(count + 1)}>Add</Button>
+            <Button onClick={() => setCount(count - 1)}>Decrease</Button>
+            <hr />
+            <h3>Lista dinámica</h3>
+            <h4>Total: {total}</h4> 
+            {inputs.map((value, i) => (
+                <div key={i}> 
+                    <p>Cifra: {i + 1}</p>
+                    <FormControl
+                        type="number"
+                        value={value} 
+                        onChange={(e) => handleInputChange(i, e.target.value)} // Manejar el cambio
+                    />
+                </div>
+            ))}
+            <Button onClick={addInput}>Add Input</Button>
+            <Button onClick={removeInput}>Remove Input</Button>
         </Container>
-    )
-}
+    );
+};
+export default Counter

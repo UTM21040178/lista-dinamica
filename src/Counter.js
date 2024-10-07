@@ -60,8 +60,8 @@ export const Counter = () => {
                     />
                 </div>
             ))}
-            <Button onClick={addInput}>Add Input</Button>
-            <Button onClick={removeInput}>Remove Input</Button>
+            <Button onClick={addInput}>Add </Button>
+            <Button onClick={removeInput}>Remove </Button>
         </Container>
     );
 };
